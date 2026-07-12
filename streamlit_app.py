@@ -41,7 +41,7 @@ ativos_macro = {
 # -----------------------------------------------------------------------------
 # FUNÇÃO CACHEADA PARA CAPTURA DE DADOS
 # -----------------------------------------------------------------------------
-@st.cache_data(ttl=300)  # Atualiza o painel a cada 5 minutos
+@st.cache_data(ttl=300)  # Updates every 5 minutes
 def obter_dados(ticker, janela_tempo):
     dias = {"1M": 30, "3M": 90, "6M": 180, "1Y": 365, "YTD": 365}[janela_tempo]
     data_de_inicio = datetime.now() - timedelta(days=dias)
