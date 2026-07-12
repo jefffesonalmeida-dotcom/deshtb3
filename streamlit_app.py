@@ -1,7 +1,8 @@
 import streamlit as st
 import yfinance as yf
 import pandas as pd
-import plotly.graph_objects as px
+import plotly.graph_objects as go
+import plotly.express as px
 from plotly.subplots import make_subplots
 from datetime import datetime, timedelta
 
@@ -96,17 +97,21 @@ with tab_grafico:
     df_dados = obter_dados(ativos_macro[ativo_selecionado], periodo_grafico)
     
     if not df_dados.empty:
+        # Subplots corretos separando Preço (Candle) e Volume (Barras)
         fig_principal = make_subplots(rows=2, cols=1, shared_xaxes=True, 
                                       vertical_spacing=0.03, row_width=[0.2, 0.8])
         
-        fig_principal.add_trace(px.Candlestick(
+        # Desenha os Candles (Preço) usando go.Candlestick corretamente
+        fig_principal.add_trace(go.Candlestick(
             x=df_dados.index, open=df_dados['Open'], high=df_dados['High'],
             low=df_dados['Low'], close=df_dados['Close'], name="Preço"
-        ).data[0], row=1, col=1)
+        ), row=1, col=1)
         
-        fig_principal.add_trace(px.bar(
-            x=df_dados.index, y=df_dados['Volume'], name="Volume"
-        ).data[0], row=2, col=1)
+        # Desenha as Barras (Volume) usando go.Bar corretamente
+        fig_principal.add_trace(go.Bar(
+            x=df_dados.index, y=df_dados['Volume'], name="Volume",
+            marker_color='#3A4D62'
+        ), row=2, col=1)
         
         fig_principal.update_layout(
             template="plotly_dark",
